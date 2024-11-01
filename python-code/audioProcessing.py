@@ -130,20 +130,19 @@ def plot_spectrogram(audioSignal, sampleRate, hop_length):
 
     spectrogramP2dB_Log = librosa.power_to_db(spectrogramSignal)
 
-    plt.figure()  
+    plt.figure(figsize=(10,8))  
     plt.title("Espectrograma Pasos.wav")
 
     plt.subplot(2, 1, 1)
     librosa.display.specshow(spectrogramP2dB_Log, sr=sampleRate, hop_length=hop_length, x_axis="time", y_axis="log")
-    plt.colorbar(format="%+2.f")
+    plt.colorbar(format="%+2.f dB")
 
     spectrogramA2Db_Log = librosa.amplitude_to_db(np.abs(librosa.stft(audioSignal)))
     #spectrogramA2Db_Log = librosa.amplitude_to_db(librosa.stft(audioSignal))
     
     plt.subplot(2, 1, 2)
     librosa.display.specshow(spectrogramA2Db_Log, sr=sampleRate, hop_length=hop_length, x_axis= "time", y_axis="log")
-    plt.colorbar(format="%+2.0f dB")
-
+    plt.colorbar(format="%+2.f dB")
     plt.show()
 
 def plot_MEL_spectrogram(audioSignal, sampleRate):
@@ -168,33 +167,11 @@ def plot_MEL_spectrogram(audioSignal, sampleRate):
 
     plt.show()
 
-def plot_MFCC_spectrogram(audioSignal, sampleRate):
-    #Extraemos los Mel Frequency Cepstrum Coeficients
-    MFCCsSignal = librosa.feature.mfcc(y=audioSignal, n_mfcc=13, sr=sampleRate)
-    
-    #Delta MFCCs
-    deltaMFCCsSignal = librosa.feature.delta(MFCCsSignal)
+def plot_MFCC_spectrogram(audioSignal, sampleRate, title):
 
-    #Delta2 MFCCs
-    delta2MFCCsSignal = librosa.feature.delta(MFCCsSignal, order=2)
-
-    plt.figure()
-    plt.title("Espectrograma MFCC Pasos.wav")
-    plt.subplot(3, 1, 1)
+    plt.title(title)
     librosa.display.specshow(MFCCsSignal, x_axis= "time", sr=sampleRate)
     plt.colorbar()
-
-    plt.subplot(3, 1, 2)
-    plt.title("MFCCs Delta")
-    librosa.display.specshow(deltaMFCCsSignal, x_axis= "time", sr=sampleRate)
-    plt.colorbar()
-
-    plt.subplot(3, 1, 3)
-    plt.title("MFCCs Delta2")
-    librosa.display.specshow(delta2MFCCsSignal, x_axis= "time", sr=sampleRate)
-    plt.colorbar()
-
-    plt.show()
 
 def calculate_split_frequency_bin(splitFrequency, sampleRate, numFrequencyBins):
     
@@ -298,18 +275,31 @@ plot_spectrogram(audioSignal, sampleRate, HOP_LENGTH)
 
 plot_MEL_spectrogram(audioSignal, sampleRate)
 
-plot_MFCC_spectrogram(audioSignal, sampleRate)
+# Extraemos los Mel Frequency Cepstrum Coeficients
+MFCCsSignal = librosa.feature.mfcc(y=audioSignal, n_mfcc=13, sr=sampleRate)
+# Delta MFCCs
+deltaMFCCsSignal = librosa.feature.delta(MFCCsSignal)
+# Delta2 MFCCs
+delta2MFCCsSignal = librosa.feature.delta(MFCCsSignal, order=2)
+
+plt.figure(figsize=(10,8))
+plt.subplot(3, 1, 1)
+plot_MFCC_spectrogram(MFCCsSignal, sampleRate, "MFCCs Señal Pasos.wav")
+plt.subplot(3, 1, 2)
+plot_MFCC_spectrogram(deltaMFCCsSignal, sampleRate, "Delta MFCCs Señal Pasos.wav")
+plt.subplot(3, 1, 3)
+plot_MFCC_spectrogram(delta2MFCCsSignal, sampleRate, "Delta2 MFCCs Señal Pasos.wav")
+plt.show()    
 
 splitFrequency=2500
 BERSignal = calculate_BER(audioSignal, splitFrequency, sampleRate)
 plot_BER(BERSignal)
 
+plt.figure(figsize=(10,8))
 plt.subplot(2, 1, 1)
 plot_spectral_centroid(audioSignal, sampleRate)
-
 plt.subplot(2, 1 ,2)
 plot_spectral_bandwidth(audioSignal, sampleRate)
-
 plt.show()
 
 audio_thread = threading.Thread(target=play_audio, args=(audioSignal, sampleRate))
