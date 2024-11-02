@@ -24,7 +24,7 @@ FRAME_SIZE = 1024
 HOP_LENGTH = 512
 
 # Path to the test audio files
-BASE_DIR = "D:/TELECO/GRADO/TFG/step-detection-reverb/resources/sounds"
+SOUNDS_PATH = "../resources/sounds"
 
 # BASIC AND COMMON FUNCTIONS
 
@@ -241,11 +241,8 @@ def plot_spectral_bandwidth(audioSignal, sampleRate):
 ##############################
 
 fileName = "Pasos.wav"
-print("Ruta sin fichero: " + BASE_DIR)
-print("Fichero: " + fileName)
-print("PATH: " + os.path.join(BASE_DIR, fileName))
 
-sampleRate, audioSignal = wavfile.read(os.path.join(BASE_DIR, fileName))
+sampleRate, audioSignal = wavfile.read(os.path.join(SOUNDS_PATH, fileName))
 duration = len(audioSignal) / sampleRate
 time = np.linspace(0, duration, len(audioSignal))
 

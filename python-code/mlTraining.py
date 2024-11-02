@@ -35,11 +35,11 @@ class FeedForwardNet(nn.Module):
 
 
 def download_mnist_datasets():
-    train_data = datasets.MNIST(
-        root="data",
+    train_data = datasets.MNIST( # dataset class
+        root="data", # where to store the dataset downloaded (the name of the folder will be data)
         train=True,
         download=True,
-        transform=ToTensor(),
+        transform=ToTensor(), # normalizes the values between 0 and 1
     )
     validation_data = datasets.MNIST(
         root="data",

@@ -13,6 +13,7 @@ import IPython
 from scipy.signal import fftconvolve
 from scipy.io import wavfile
 import math
+import json
 
 # Function to play the audio signal
 def play_audio(audio_signal, sample_rate):
@@ -134,9 +135,27 @@ Lg = np.ceil(Lg_t*sample_rate)       # in samples
 fft_len = 512
 
 # Creating the room to run the simulation
+print("******************")
 print("CREATING ROOM")
 
-room = pra.ShoeBox([5,30,4], fs=sample_rate, ray_tracing=True, air_absorption=False, materials=pra.Material(0.01, 0.1))
+with open('config-files/roomConfig.json', 'r') as file:
+    roomData = json.load(file)
+
+roomWidth = roomData['size']['width']
+roomLength = roomData['size']['length']
+roomHeight = roomData['size']['height']
+materialAbsorption = roomData['materials']['absorption']
+materialScattering = roomData['materials']['scattering']
+
+print("Room Width: " + roomWidth)
+print("Room Length: " + roomLength)
+print("Room Height: " + roomHeight)
+print("Material Absorption: " + materialAbsorption)
+print("Material Scattering: " + materialScattering)
+print("******************")
+
+room = pra.ShoeBox([roomWidth, roomLength, roomHeight], fs=sample_rate, ray_tracing=True, air_absorption=False, materials=pra.Material(float(materialAbsorption), float(materialScattering)))
+#room = pra.ShoeBox([5,30,4], fs=sample_rate, ray_tracing=True, air_absorption=False, materials=pra.Material(0.01, 0.1))
 
 # Set the ray tracing parameters
 room.set_ray_tracing(receiver_radius=0.5, n_rays=100000)

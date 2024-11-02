@@ -1,0 +1,13 @@
+{
+    "size" :
+    {
+        "width" : "5",
+        "length" : "30",
+        "height" : "4"
+    },
+    "materials" :
+    {
+        "absorption" : "0.01",
+        "scattering" : "0.1" 
+    }
+}
