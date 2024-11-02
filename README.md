@@ -25,3 +25,15 @@ python-code/mlTraining.py
 	Determines whether it is a step or not
 	If it is a step, it locates the sector where the source was found
 
+python-code/config-files/roomConfig.js
+
+	Defines the size of the room and the parameters for the materials of the surfaces
+
+
+python-code/config-files/micDistribuion.json
+
+	Defines the number of mics and their location on the room
+
+python-code/config-files/sourceDistribution.json
+
+	Defines the active source and its position on the room
